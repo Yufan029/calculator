@@ -65,11 +65,7 @@ body {
     padding: 0px;
 }
 
-.number0 {
-    flex-basis: 49%;
-}
-
 .clear, .sign, .module, .divide, .multiply, 
-.subtract, .add, .equal {
+.subtract, .add, .equal, .backspace {
     background-color: rgb(230, 228, 227);
 }

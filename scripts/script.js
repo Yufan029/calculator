@@ -1,7 +1,6 @@
 const operators = ['+', '-', '*', '/', '%'];
 const divideByZeroErrorMessage = 'Cannot divide by zero';
 const screenWidthInDigital = 11;
-const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 let buttons = document.querySelector('.buttons');
 let display = document.querySelector('.display');
@@ -10,18 +9,30 @@ let operatorButtons = document.querySelectorAll('.operator');
 let subDisplay = document.querySelector('.subDisplay');
 let mainDisplay = document.querySelector('.mainDisplay');
 let equal = document.querySelector('.equal');
+let backspaceButton = document.querySelector('.backspace');
 
 let leftNumber;
 let rightNumber;
 let operator;
 
 equal.addEventListener('click', (e) => {
-    if (mainDisplay.textContent === "") {
+    if (mainDisplay.textContent === "" || subDisplay.textContent === "") {
         return;
     }
 
     rightNumber = Number(mainDisplay.textContent);
     let result = operate(leftNumber, rightNumber, operator);
+
+    if (result !== divideByZeroErrorMessage && result.toString().includes('e')) {
+        let numberArr = result.toString().split('e');
+        let remainLength = screenWidthInDigital - numberArr[1].length - 1;
+        result = `${numberArr[0].slice(0, remainLength)}e${numberArr[1]}`;
+    }
+
+    if (result !== divideByZeroErrorMessage && result.toString().length > screenWidthInDigital) {
+        result = result.toExponential(2);
+    }
+
     clearChildren(mainDisplay, subDisplay);
     mainDisplay.appendChild(document.createTextNode(result));
     if (result === divideByZeroErrorMessage) {
@@ -32,14 +43,14 @@ equal.addEventListener('click', (e) => {
 });
 
 buttons.addEventListener('click', (e) => {
-    switch(e.target.textContent) {
+    backspaceButton.disabled = false;
+    switch(e.target.textContent.trim()) {
         case 'C':
             clearChildren(mainDisplay, subDisplay);
             clearDisplay();
             return;
         case '+/-':
             if (mainDisplay.textContent.includes('-')) {
-                //mainDisplay.removeChild(mainDisplay.firstChild);
                 let text = mainDisplay.textContent.toString();
                 let newText = text.slice(text.indexOf('-')+1);
                 clearChildren(mainDisplay);
@@ -50,6 +61,14 @@ buttons.addEventListener('click', (e) => {
             
             return;
         case '=':
+            return;
+        case '.':
+            if (mainDisplay.textContent.includes('.')) {
+                return;
+            }
+            break;
+        case 'backspace':
+            deleteRightMostMainDisplay();
             return;
     }
 
@@ -87,6 +106,56 @@ operatorButtons.forEach(x => {
         subDisplay.appendChild(document.createTextNode(`${leftNumber}${operator}`));
     });
 });
+
+function scientificToDecimal(num) {
+    var nsign = Math.sign(num);
+    //remove the sign
+    num = Math.abs(num);
+    //if the number is in scientific notation remove it
+    if (/\d+\.?\d*e[\+\-]*\d+/i.test(num)) {
+        var zero = '0',
+                parts = String(num).toLowerCase().split('e'), //split into coeff and exponent
+                e = parts.pop(), //store the exponential part
+                l = Math.abs(e), //get the number of zeros
+                sign = e / l,
+                coeff_array = parts[0].split('.');
+        if (sign === -1) {
+            l = l - coeff_array[0].length;
+            if (l < 0) {
+              num = coeff_array[0].slice(0, l) + '.' + coeff_array[0].slice(l) + (coeff_array.length === 2 ? coeff_array[1] : '');
+            } 
+            else {
+              num = zero + '.' + new Array(l + 1).join(zero) + coeff_array.join('');
+            }
+        } 
+        else {
+            var dec = coeff_array[1];
+            if (dec)
+                l = l - dec.length;
+            if (l < 0) {
+              num = coeff_array[0] + dec.slice(0, l) + '.' + dec.slice(l);
+            } else {
+              num = coeff_array.join('') + new Array(l + 1).join(zero);
+            }
+        }
+    }
+
+    return nsign < 0 ? '-'+num : num;
+};
+
+function deleteRightMostMainDisplay() {
+    let mainNumber = Number(mainDisplay.textContent);
+    let decimalNumber = scientificToDecimal(mainNumber);
+    let newArray = decimalNumber.toString().split('');
+    newArray.pop();
+    clearChildren(mainDisplay);
+    let result = newArray.join('');
+    if (result.length > screenWidthInDigital) {
+        result = Number(result).toExponential(2);
+    }
+
+    mainDisplay.appendChild(document.createTextNode(result));
+}
 
 function clearChildren(...elements) {
     for (let element of elements) {
@@ -138,15 +207,69 @@ function divide(a, b) {
         return 'Cannot divide by zero';
     }
 
-    let result = a / b;
-    let arr = result.toString().split('.');
-    if (arr[0].length + arr[1].length > screenWidthInDigital) {
-        result = `${arr[0]}.${arr[1].slice(0, 10-arr[0].length)}`;
-    }
-
-    return Number(result);
+    return a / b;
 }
 
 function module(a, b) {
     return a % b;
 }
+
+window.addEventListener('keydown', (e) => {
+    switch(e.key) {
+        case 'c':
+        case 'C':
+        case 'Escape':
+            clearChildren(mainDisplay, subDisplay);
+            clearDisplay();
+            break;
+        case '0':
+            document.querySelector('.number0').click();
+            break;
+        case '1':
+            document.querySelector('.number1').click();
+            break;
+        case '2':
+            document.querySelector('.number2').click();
+            break;
+        case '3':
+            document.querySelector('.number3').click();
+            break;
+        case '4':
+            document.querySelector('.number4').click();
+            break;
+        case '5':
+            document.querySelector('.number5').click();
+            break;
+        case '6':
+            document.querySelector('.number6').click();
+            break;
+        case '7':
+            document.querySelector('.number7').click();
+            break;
+        case '8':
+            document.querySelector('.number8').click();
+            break;
+        case '9':
+            document.querySelector('.number9').click();
+            break;
+        case '+':
+            document.querySelector('.add').click();
+            break;
+        case '-':
+            document.querySelector('.subtract').click();
+            break;
+        case '*':
+            document.querySelector('.multiply').click();
+            break;
+        case '/':
+            document.querySelector('.divide').click();
+            break;
+        case '=':
+        case 'Enter':
+            equal.click();
+            break;
+        case 'Backspace':
+            backspaceButton.click();
+            break;
+    }
+})
