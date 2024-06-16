@@ -63,9 +63,11 @@ body {
     font-weight: 500;
     margin: 0;
     padding: 0px;
+    border: none;
 }
 
 .clear, .sign, .module, .divide, .multiply, 
 .subtract, .add, .equal, .backspace {
     background-color: rgb(230, 228, 227);
+    border: none;
 }
