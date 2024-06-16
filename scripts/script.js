@@ -1,6 +1,8 @@
 const operators = ['+', '-', '*', '/', '%'];
 const divideByZeroErrorMessage = 'Cannot divide by zero';
 const screenWidthInDigital = 11;
+const MOUSEENTER = 'mouseenter';
+const MOUSELEAVE = 'mouseleave';
 
 let buttons = document.querySelector('.buttons');
 let display = document.querySelector('.display');
@@ -10,6 +12,22 @@ let subDisplay = document.querySelector('.subDisplay');
 let mainDisplay = document.querySelector('.mainDisplay');
 let equal = document.querySelector('.equal');
 let backspaceButton = document.querySelector('.backspace');
+let btn0 = document.querySelector('.number0');
+let btn1 = document.querySelector('.number1');
+let btn2 = document.querySelector('.number2');
+let btn3 = document.querySelector('.number3');
+let btn4 = document.querySelector('.number4');
+let btn5 = document.querySelector('.number5');
+let btn6 = document.querySelector('.number6');
+let btn7 = document.querySelector('.number7');
+let btn8 = document.querySelector('.number8');
+let btn9 = document.querySelector('.number9');
+let btnAdd = document.querySelector('.add');
+let btnSubtract = document.querySelector('.subtract');
+let btnMultiply = document.querySelector('.multiply');
+let btnDivide = document.querySelector('.divide');
+let btnModule = document.querySelector('.module');
+let btnDecimal = document.querySelector('.decimal');
 
 let leftNumber;
 let rightNumber;
@@ -221,55 +239,154 @@ window.addEventListener('keydown', (e) => {
         case 'Escape':
             clearChildren(mainDisplay, subDisplay);
             clearDisplay();
+            clear.classList.add(MOUSEENTER);
             break;
         case '0':
-            document.querySelector('.number0').click();
+            btn0.click();
+            btn0.classList.add(MOUSEENTER);
             break;
         case '1':
-            document.querySelector('.number1').click();
+            btn1.click();
+            btn1.classList.add(MOUSEENTER);
             break;
         case '2':
-            document.querySelector('.number2').click();
+            btn2.click();
+            btn2.classList.add(MOUSEENTER);
             break;
         case '3':
-            document.querySelector('.number3').click();
+            btn3.click();
+            btn3.classList.add(MOUSEENTER);
             break;
         case '4':
-            document.querySelector('.number4').click();
+            btn4.click();
+            btn4.classList.add(MOUSEENTER);
             break;
         case '5':
-            document.querySelector('.number5').click();
+            btn5.click();
+            btn5.classList.add(MOUSEENTER);
             break;
         case '6':
-            document.querySelector('.number6').click();
+            btn6.click();
+            btn6.classList.add(MOUSEENTER);
             break;
         case '7':
-            document.querySelector('.number7').click();
+            btn7.click();
+            btn7.classList.add(MOUSEENTER);
             break;
         case '8':
-            document.querySelector('.number8').click();
+            btn8.click();
+            btn8.classList.add(MOUSEENTER);
             break;
         case '9':
-            document.querySelector('.number9').click();
+            btn9.click();
+            btn9.classList.add(MOUSEENTER);
             break;
         case '+':
-            document.querySelector('.add').click();
+            btnAdd.click();
+            btnAdd.classList.add(MOUSEENTER);
             break;
         case '-':
-            document.querySelector('.subtract').click();
+            btnSubtract.click();
+            btnSubtract.classList.add(MOUSEENTER);
             break;
         case '*':
-            document.querySelector('.multiply').click();
+            btnMultiply.click();
+            btnMultiply.classList.add(MOUSEENTER);
             break;
         case '/':
-            document.querySelector('.divide').click();
+            btnDivide.click();
+            btnDivide.classList.add(MOUSEENTER);
+            break;
+        case '%':
+            btnModule.click();
+            btnModule.classList.add(MOUSEENTER);
             break;
         case '=':
         case 'Enter':
             equal.click();
+            equal.classList.add(MOUSEENTER);
             break;
         case 'Backspace':
             backspaceButton.click();
+            backspaceButton.classList.add(MOUSEENTER);
+            break;
+        case '.':
+            btnDecimal.click();
+            btnDecimal.classList.add(MOUSEENTER);
             break;
     }
-})
+});
+
+window.addEventListener('keyup', (e) => {
+    switch(e.key) {
+        case 'c':
+        case 'C':
+        case 'Escape':
+            clear.classList.remove(MOUSEENTER);
+            break;
+        case '0':
+            btn0.classList.remove(MOUSEENTER);
+            break;
+        case '1':
+            btn1.classList.remove(MOUSEENTER);
+            break;
+        case '2':
+            btn2.classList.remove(MOUSEENTER);
+            break;
+        case '3':
+            btn3.classList.remove(MOUSEENTER);
+            break;
+        case '4':
+            btn4.classList.remove(MOUSEENTER);
+            break;
+        case '5':
+            btn5.classList.remove(MOUSEENTER);
+            break;
+        case '6':
+            btn6.classList.remove(MOUSEENTER);
+            break;
+        case '7':
+            btn7.classList.remove(MOUSEENTER);
+            break;
+        case '8':
+            btn8.classList.remove(MOUSEENTER);
+            break;
+        case '9':
+            btn9.classList.remove(MOUSEENTER);
+            break;
+        case '+':
+            btnAdd.classList.remove(MOUSEENTER);
+            break;
+        case '-':
+            btnSubtract.classList.remove(MOUSEENTER);
+            break;
+        case '*':
+            btnMultiply.classList.remove(MOUSEENTER);
+            break;
+        case '/':
+            btnDivide.classList.remove(MOUSEENTER);
+            break;
+        case '%':
+            btnModule.classList.remove(MOUSEENTER);
+            break;
+        case '=':
+        case 'Enter':
+            equal.classList.remove(MOUSEENTER);
+            break;
+        case 'Backspace':
+            backspaceButton.classList.remove(MOUSEENTER);
+            break;
+        case '.':
+            btnDecimal.classList.remove(MOUSEENTER);
+            break;
+    }
+});
+
+let allButtons = document.querySelectorAll('.buttons button');
+allButtons.forEach(btn => btn.addEventListener(MOUSEENTER, (e) => {
+    e.target.classList.add(MOUSEENTER);
+}));
+
+allButtons.forEach(btn => btn.addEventListener(MOUSELEAVE, (e) => {
+    e.target.classList.remove(MOUSEENTER);
+}));
